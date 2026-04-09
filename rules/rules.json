@@ -1,0 +1,252 @@
+{
+  "$schema": "https://example.com/case-study/rules-schema-v1.json",
+  "version": "1.0.0",
+  "specification": "Crescent Harbor Manifest Filing Specification v3.0",
+  "note": "Machine-readable companion to rules.md. The 'check' field is a hint, not a complete spec — implement the full prose semantics from rules.md. If the two files disagree, rules.md is authoritative.",
+  "rules": [
+    {
+      "id": "R-001",
+      "category": "identity",
+      "severity": "reject",
+      "field": "/manifestId",
+      "specRef": "§3.4",
+      "summary": "manifestId must be 12-32 chars from [A-Z0-9-], no lowercase",
+      "check": { "type": "regex", "pattern": "^[A-Z0-9-]{12,32}$" }
+    },
+    {
+      "id": "R-002",
+      "category": "identity",
+      "severity": "reject",
+      "field": "/filer/filerId",
+      "specRef": "§3.5",
+      "summary": "filerId is three uppercase letters then six digits",
+      "check": { "type": "regex", "pattern": "^[A-Z]{3}[0-9]{6}$" }
+    },
+    {
+      "id": "R-003",
+      "category": "identity",
+      "severity": "reject",
+      "field": "/filer/contactEmail",
+      "specRef": "§3.5",
+      "summary": "contactEmail must be RFC 5322 §3.4.1 syntactically valid",
+      "check": { "type": "custom", "name": "rfc5322EmailAddrSpec" }
+    },
+    {
+      "id": "R-004",
+      "category": "vessel",
+      "severity": "reject",
+      "field": "/vessel/imoNumber",
+      "specRef": "§4.1",
+      "rejectionCode": "R-603",
+      "summary": "IMO check digit must validate per the standard algorithm",
+      "check": { "type": "custom", "name": "imoCheckDigit" }
+    },
+    {
+      "id": "R-005",
+      "category": "vessel",
+      "severity": "reject",
+      "field": "/vessel/name",
+      "specRef": "§4.1",
+      "summary": "Vessel name uses [A-Z0-9 .-] only after normalization",
+      "check": { "type": "regex", "pattern": "^[A-Z0-9 .-]+$" },
+      "ambiguous": true,
+      "ambiguityNote": "Whether to silently uppercase lowercase input or reject it as a data quality issue is unspecified. Decide and document."
+    },
+    {
+      "id": "R-006",
+      "category": "vessel",
+      "severity": "reject",
+      "field": "/vessel/grossRegisterTons",
+      "specRef": "§1.1, §4.1",
+      "summary": "Gross register tons must be greater than 500",
+      "check": { "type": "minValue", "value": 501 }
+    },
+    {
+      "id": "R-007",
+      "category": "vessel",
+      "severity": "reject",
+      "field": "/arrival/terminal",
+      "specRef": "§4.3",
+      "rejectionCode": "R-601",
+      "summary": "Vessel type must be consistent with arrival terminal",
+      "check": { "type": "custom", "name": "vesselTypeTerminalConsistent" }
+    },
+    {
+      "id": "R-008",
+      "category": "containers",
+      "severity": "reject",
+      "field": "/containers",
+      "specRef": "§5.3",
+      "rejectionCode": "R-604",
+      "summary": "containerId values must be unique within a manifest",
+      "check": { "type": "custom", "name": "containerIdUniqueness" }
+    },
+    {
+      "id": "R-009",
+      "category": "containers",
+      "severity": "reject",
+      "field": "/containers",
+      "specRef": "§5.1",
+      "summary": "At least one container is required",
+      "check": { "type": "minItems", "value": 1 }
+    },
+    {
+      "id": "R-010",
+      "category": "containers",
+      "severity": "reject",
+      "field": "/containers",
+      "specRef": "§5.1, §5.9",
+      "summary": "BALLAST containers may not coexist with any other container",
+      "check": { "type": "custom", "name": "ballastExclusivity" }
+    },
+    {
+      "id": "R-011",
+      "category": "containers",
+      "severity": "reject",
+      "field": "/containers/*/commodityCode",
+      "specRef": "§5.5",
+      "rejectionCode": "R-606",
+      "summary": "REF container commodityCode may not be the reserved value 0000",
+      "check": { "type": "notEquals", "value": "0000" }
+    },
+    {
+      "id": "R-012",
+      "category": "containers",
+      "severity": "reject",
+      "field": "/containers/*/vins",
+      "specRef": "§5.8",
+      "rejectionCode": "R-605",
+      "summary": "VEH container vins.length must equal quantity",
+      "check": { "type": "custom", "name": "vinListMatchesQuantity" }
+    },
+    {
+      "id": "R-013",
+      "category": "hazmat",
+      "severity": "reject",
+      "field": "/containers/*/priorAuthorizationRef",
+      "specRef": "§6.3",
+      "rejectionCode": "H-204",
+      "summary": "HAZ class 7 containers require priorAuthorizationRef",
+      "check": { "type": "custom", "name": "class7RequiresPriorAuth" }
+    },
+    {
+      "id": "R-014",
+      "category": "hazmat",
+      "severity": "reject",
+      "field": "/containers",
+      "specRef": "§6.2",
+      "rejectionCode": "H-201",
+      "summary": "Combined HAZ gross weight cannot exceed 25% of vessel GRT",
+      "check": { "type": "custom", "name": "hazmatProportionUnderQuarter" },
+      "ambiguous": true,
+      "ambiguityNote": "Schema does not require grossWeightKg on HAZ containers. Behavior when weights are missing is unspecified. Decide whether to enforce strictly, best-effort, or skip."
+    },
+    {
+      "id": "R-015",
+      "category": "hazmat",
+      "severity": "warning",
+      "field": "/containers",
+      "specRef": "§6.1",
+      "summary": "Surface a warning when hazmat is present, do not block transmission",
+      "check": { "type": "custom", "name": "hazmatPresenceWarning" }
+    },
+    {
+      "id": "R-016",
+      "category": "valuation",
+      "severity": "reject",
+      "field": "/declaredValueTotal",
+      "specRef": "§7.1",
+      "rejectionCode": "V-301",
+      "summary": "declaredValueTotal must equal sum of container declaredValueUSD, half-away rounding to cents",
+      "check": { "type": "custom", "name": "declaredValueTotalMatchesSum" }
+    },
+    {
+      "id": "R-017",
+      "category": "valuation",
+      "severity": "reject",
+      "field": "/declaredValueTotal",
+      "specRef": "§7.3",
+      "rejectionCode": "V-302",
+      "summary": "declaredValueTotal must not exceed USD 500,000,000",
+      "check": { "type": "maxValue", "value": 500000000 }
+    },
+    {
+      "id": "R-018",
+      "category": "valuation",
+      "severity": "warning",
+      "field": "/containers/*/declaredValueUSD",
+      "specRef": "§7.1",
+      "summary": "Container declaredValueUSD should be 2dp; warn on higher precision",
+      "check": { "type": "custom", "name": "twoDecimalPlacePrecision" }
+    },
+    {
+      "id": "R-019",
+      "category": "crew",
+      "severity": "reject",
+      "field": "/crew",
+      "specRef": "§8.3",
+      "rejectionCode": "C-401",
+      "summary": "Exactly one crew member with role MASTER",
+      "check": { "type": "custom", "name": "exactlyOneMaster" }
+    },
+    {
+      "id": "R-020",
+      "category": "crew",
+      "severity": "reject",
+      "field": "/crew/*/dateOfBirth",
+      "specRef": "§8.4",
+      "rejectionCode": "C-402",
+      "summary": "Crew member age (computed at ETA) must be 16-80 inclusive",
+      "check": { "type": "custom", "name": "crewAgeRange" }
+    },
+    {
+      "id": "R-021",
+      "category": "crew",
+      "severity": "reject",
+      "field": "/crew/*/nationality",
+      "specRef": "§8.2",
+      "summary": "Master must have a non-empty nationality field",
+      "check": { "type": "custom", "name": "masterHasNationality" }
+    },
+    {
+      "id": "R-022",
+      "category": "timing",
+      "severity": "reject",
+      "field": "/arrival/eta",
+      "specRef": "§9.1",
+      "rejectionCode": "T-501",
+      "summary": "Manifest may not be transmitted earlier than 96 hours before ETA",
+      "check": { "type": "custom", "name": "filingNotTooEarly" }
+    },
+    {
+      "id": "R-023",
+      "category": "timing",
+      "severity": "reject",
+      "field": "/arrival/eta",
+      "specRef": "§9.1",
+      "rejectionCode": "T-502",
+      "summary": "Manifest may not be transmitted later than 24 hours before ETA",
+      "check": { "type": "custom", "name": "filingNotTooLate" },
+      "ambiguous": true,
+      "ambiguityNote": "Spec does not define whether the filing clock is the client send time, the server receive time, or the receipt time. Decide and document."
+    },
+    {
+      "id": "R-024",
+      "category": "amendments",
+      "severity": "reject",
+      "field": "/amendmentSequence",
+      "specRef": "§9.3",
+      "summary": "Amendments must reuse original manifestId; vessel.imoNumber and arrival.eta unchanged",
+      "check": { "type": "custom", "name": "amendmentInvariants" }
+    },
+    {
+      "id": "R-025",
+      "category": "amendments",
+      "severity": "reject",
+      "field": "/amendmentSequence",
+      "specRef": "§9.3",
+      "summary": "First amendment is sequence 1; each subsequent amendment increments by 1",
+      "check": { "type": "custom", "name": "amendmentSequenceMonotonic" }
+    }
+  ]
+}
