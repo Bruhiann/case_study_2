@@ -1,0 +1,6 @@
+# JSON Schema Draft 2020-12 validator.
+# The mock Authority endpoint uses jsonschema==4.23.0; we require >=4.23.0
+# so that the installed version (currently 4.25.1) is accepted without a
+# downgrade. No other external dependencies are needed — HMAC, HTTP, UUID,
+# datetime, and decimal arithmetic are all covered by the standard library.
+jsonschema>=4.23.0,<5
