@@ -1,18 +1,18 @@
 """
 Crescent Harbor Direct Filer — CLI entry point.
 
-Current capabilities (Phase 1):
+Current capabilities (Phases 1–2):
   build     : assemble a complete manifest from a scenario input
   validate  : run JSON Schema validation against the built manifest
+  rules     : run all 25 business rules against the validated manifest
 
 Planned (later phases):
-  rules     : business rules engine
   transmit  : HMAC-signed submission to the Authority
   all       : run the full pipeline for all scenarios and write results.json
 
 Usage:
-  python run.py --scenario PATH          # build + validate a single scenario
-  python run.py --scenario PATH --json   # print the built manifest as JSON
+  python run.py --scenario PATH          # build + validate + rules check
+  python run.py --scenario PATH --json   # also print the built manifest JSON
 """
 
 import argparse
@@ -23,7 +23,7 @@ from pathlib import Path
 # Allow running from any working directory.
 sys.path.insert(0, str(Path(__file__).parent))
 
-from src import builder, validator
+from src import builder, rules, validator
 
 
 def main() -> None:
@@ -54,28 +54,44 @@ def main() -> None:
         scenario = json.load(f)
 
     manifest = builder.build(scenario)
-    print(f"[builder]  manifestId       : {manifest['manifestId']}")
-    print(f"[builder]  filer.filerId    : {manifest['filer']['filerId']}")
-    print(f"[builder]  arrival.eta      : {manifest['arrival']['eta']}")
-    print(f"[builder]  filerSignature   : signedAtUtc={manifest['filerSignature']['signedAtUtc']}")
-    print(f"[builder]  vessel.name      : {manifest['vessel']['name']}")
+    print(f"[builder]  manifestId    : {manifest['manifestId']}")
+    print(f"[builder]  filer.filerId : {manifest['filer']['filerId']}")
+    print(f"[builder]  arrival.eta   : {manifest['arrival']['eta']}")
+    print(f"[builder]  signedAtUtc   : {manifest['filerSignature']['signedAtUtc']}")
+    print(f"[builder]  vessel.name   : {manifest['vessel']['name']}")
 
     if args.print_json:
         print("\n--- built manifest ---")
         print(json.dumps(manifest, indent=2))
         print("--- end manifest ---\n")
 
-    # ---- Schema validate -------------------------------------------------------
+    # ---- Schema validate ------------------------------------------------------
     schema_errors = validator.validate(manifest)
     if schema_errors:
         print(f"\n[validator] SCHEMA INVALID — {len(schema_errors)} error(s):")
         for e in schema_errors:
             print(f"  [{e['code']}] {e['path']}: {e['message']}")
+        print("\nOutcome: rejected_by_schema")
         sys.exit(2)
-    else:
-        print("\n[validator] schema OK — manifest is schema-valid")
+    print("\n[validator] schema OK")
 
-    print("\nPhase 1 complete. Rules engine and transmission not yet implemented.")
+    # ---- Business rules -------------------------------------------------------
+    rejections, warnings = rules.check(manifest)
+
+    if warnings:
+        print(f"\n[rules]    {len(warnings)} warning(s):")
+        for w in warnings:
+            print(f"  [WARN {w.rule_id}] {w.field_path}: {w.message}")
+
+    if rejections:
+        print(f"\n[rules]    REJECTED — {len(rejections)} rule violation(s):")
+        for r in rejections:
+            print(f"  [FAIL {r.rule_id}] {r.field_path}: {r.message}")
+        print("\nOutcome: rejected_by_rules")
+        sys.exit(3)
+
+    print(f"\n[rules]    all rules passed (0 rejections, {len(warnings)} warning(s))")
+    print("\nOutcome: ready for transmission (Phase 3 not yet implemented)")
 
 
 if __name__ == "__main__":
