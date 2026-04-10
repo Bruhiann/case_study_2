@@ -1,0 +1,84 @@
+{
+  "results": [
+    {
+      "scenario": "01-aurora-borealis",
+      "outcome": "accepted",
+      "manifestId": "167B6DA409F94843BE826720DA83B7F1",
+      "receiptId": "09A3B82A3B9DD68E",
+      "warnings": []
+    },
+    {
+      "scenario": "02-pacific-crest",
+      "outcome": "accepted",
+      "manifestId": "0EBD9D8EC0D942438FE617C0291B3443",
+      "receiptId": "52752300CC7F5090",
+      "warnings": [
+        {
+          "ruleId": "R-015",
+          "severity": "warning",
+          "fieldPath": "/containers",
+          "message": "manifest contains 1 HAZ container(s) ['TGHU8881113']; flagged for harbormaster review per §6.1"
+        }
+      ]
+    },
+    {
+      "scenario": "03-star-of-helios",
+      "outcome": "accepted",
+      "manifestId": "BF255D9EE10D4FDD98D010CAD0FA329D",
+      "receiptId": "9D7807F27308902D",
+      "warnings": []
+    },
+    {
+      "scenario": "04-iron-brigade",
+      "outcome": "accepted",
+      "manifestId": "83F921EE98CA4D2D983257361FDAA998",
+      "receiptId": "B7C283B550B9A371",
+      "warnings": []
+    },
+    {
+      "scenario": "05-silver-mariner",
+      "outcome": "accepted",
+      "manifestId": "DAC8E374BBB949CE886552210F277F68",
+      "receiptId": "CDA13D55F1A9FB54",
+      "warnings": []
+    },
+    {
+      "scenario": "06-northern-lights",
+      "outcome": "accepted",
+      "manifestId": "008D940D917744109BBD799F1C484EC9",
+      "receiptId": "FF3CA96A301275DC",
+      "warnings": [
+        {
+          "ruleId": "R-015",
+          "severity": "warning",
+          "fieldPath": "/containers",
+          "message": "manifest contains 1 HAZ container(s) ['FIN0000002']; flagged for harbormaster review per §6.1"
+        }
+      ]
+    },
+    {
+      "scenario": "07-tempest",
+      "outcome": "rejected_by_rules",
+      "ruleViolations": [
+        {
+          "ruleId": "R-016",
+          "severity": "reject",
+          "fieldPath": "/declaredValueTotal",
+          "message": "declaredValueTotal 7913.89 does not match the computed container sum 7913.39 (difference: 0.50)"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scenario": "08-polaris",
+      "outcome": "rejected_by_schema",
+      "schemaErrors": [
+        {
+          "code": "M-102",
+          "path": "/vessel/vesselType",
+          "message": "'PASSENGER' is not one of ['CONTAINER', 'BULK', 'TANKER', 'RORO', 'GENERAL']"
+        }
+      ]
+    }
+  ]
+}
