@@ -167,3 +167,18 @@ carry `amendmentSequence`, so this gap has no effect on grading.
 
 - **Proper CLI error messages.** Replace `sys.exit(N)` codes with a single
   structured error format that downstream tooling can parse.
+
+
+
+## AI Tooling Notes
+I used AI tools deliberately throughout the project, but treated them as 
+accelerators rather than sources of truth. I used ChatGPT early to refine 
+prompts and think through the best way to ask for targeted help before moving 
+into implementation. I used Claude Code to help plan the architecture, explore 
+implementation approaches, and speed up development in the same way I would normally 
+use documentation, examples, or Stack Overflow while building. After the core solution 
+was in place, I used Codex as a strict reviewer to challenge the submission from an 
+interviewer’s perspective, surface weak spots, catch documentation mismatches, and 
+suggest small cleanup and refactoring improvements. I verified the final behavior 
+myself and take responsibility for the design decisions, correctness of the implementation, 
+and the tradeoffs documented in this repository.
