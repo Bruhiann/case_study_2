@@ -42,6 +42,9 @@ cd mock-customs
 docker compose up --build
 ```
 
+Leave the mock running in that terminal. Then open a second terminal at the
+repository root to run the filer commands below.
+
 2. Install filer dependencies from the repository root:
 
 ```bash

@@ -27,6 +27,10 @@ The mock listens on `http://localhost:8080`. You should see:
 Leave this terminal open. The mock keeps state in memory; restarting it
 clears the duplicate-manifest detection table.
 
+Run the filer commands below from a second terminal opened at the
+`case-study` repository root. If you choose to detach the Docker process,
+you can reuse the same shell afterward.
+
 **Without Docker** (development only):
 
 ```bash
