@@ -90,7 +90,7 @@ python filer/run.py --all
 python filer/run.py --all --output /tmp/results.json
 ```
 
-Both commands write `results.json` to the case-study root. The file uses
+`bash run.sh` and `python filer/run.py --all` write `results.json` to the case-study root by default. A custom path may be provided with `--output`. The file uses
 Format B as defined in the case study brief:
 
 ```json
@@ -142,8 +142,7 @@ CUSTOMS_FILER_SECRET="<secret>" python filer/run.py --scenario ...
 **`HTTP 409: duplicate manifestId`**
 A manifest with the same ID was already submitted in this mock session.
 Restart the mock container to clear its in-memory duplicate table, then
-re-run. (Each run generates a fresh UUID manifest ID, so this should only
-occur if the same run is repeated without restarting the mock.)
+re-run. This should be rare because each run generates a fresh UUID manifestId.
 
 **Scenario produces `error` instead of expected outcome**
 Check the mock Authority logs in the Docker terminal. The `error` field in

@@ -3,8 +3,9 @@
 ## What I built
 
 A single-purpose Python filing client that takes scenario inputs, builds
-complete Cargo Arrival Manifests, validates them, enforces all 25 business
-rules, and transmits them to the Crescent Harbor Customs Authority via
+complete Cargo Arrival Manifests, validates them, runs the rules engine
+across all 25 rule IDs (with R-024/R-025 enforced in a documented stateless,
+partial form), and transmits them to the Crescent Harbor Customs Authority via
 HMAC-signed HTTP.
 
 ### Stack

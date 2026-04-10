@@ -8,7 +8,7 @@ Six of these scenarios should produce an `ACCEPTED` acknowledgment from the mock
 
 1. **Relative ETA.** Each scenario carries an `_etaOffsetHours` field instead of a literal `eta`. Your pipeline must compute the manifest's `arrival.eta` at submission time as `now() + _etaOffsetHours`, formatted per §4.2 of the specification. This makes the test deterministic regardless of when you run it. The `_etaOffsetHours` field is *input metadata*; it should not appear in the manifest you transmit to the Authority.
 
-2. **Filer identity is yours.** The scenarios contain only the substantive cargo, vessel, and crew data. You supply the `manifestId`, the `filer` block, and the `filerSignature` block from your own configuration. (For the case study, your `filerId` is `CHC100001`, your shared HMAC secret is in `mock-customs/secret.txt`, and you can pick any `manifestId` you want as long as it satisfies §3.4.)
+2. **Filer identity is yours.** The scenarios contain only the substantive cargo, vessel, and crew data. You supply the `manifestId`, the `filer` block, and the `filerSignature` block from your own configuration. (For the case study, your `filerId` is `CHC100001`, your shared HMAC secret is in `mock-customs/secrets.json`, and you can pick any `manifestId` you want as long as it satisfies §3.4.)
 
 ## What your pipeline must produce
 

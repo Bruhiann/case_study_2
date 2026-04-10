@@ -1,7 +1,7 @@
 """
 Business rules engine.
 
-Implements all 25 rules from rules/rules.md against a fully-built manifest
+Implements the rules engine for all 25 rule IDs from rules/rules.md against a fully-built manifest
 dict. The rule catalog (rules/rules.json) supplies metadata (id, severity,
 field, specRef, summary); this module supplies the evaluation logic.
 
@@ -95,7 +95,8 @@ with _CATALOG_PATH.open(encoding="utf-8") as _f:
 
 def check(manifest: dict) -> tuple[list[Issue], list[Issue]]:
     """
-    Run all 25 business rules against a manifest dict.
+    Run the rules engine across all 25 rule IDs against a manifest dict.
+    R-024 and R-025 are enforced in a documented stateless, partial form.
 
     :param manifest: A fully-built manifest dict (output of builder.build).
     :returns: (rejections, warnings)
