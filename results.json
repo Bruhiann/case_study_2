@@ -2,59 +2,33 @@
   "results": [
     {
       "scenario": "01-aurora-borealis",
-      "outcome": "accepted",
-      "manifestId": "167B6DA409F94843BE826720DA83B7F1",
-      "receiptId": "09A3B82A3B9DD68E",
-      "warnings": []
+      "outcome": "error",
+      "error": "HTTP 404: <!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n</body></html>\n"
     },
     {
       "scenario": "02-pacific-crest",
-      "outcome": "accepted",
-      "manifestId": "0EBD9D8EC0D942438FE617C0291B3443",
-      "receiptId": "52752300CC7F5090",
-      "warnings": [
-        {
-          "ruleId": "R-015",
-          "severity": "warning",
-          "fieldPath": "/containers",
-          "message": "manifest contains 1 HAZ container(s) ['TGHU8881113']; flagged for harbormaster review per §6.1"
-        }
-      ]
+      "outcome": "error",
+      "error": "HTTP 404: <!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n</body></html>\n"
     },
     {
       "scenario": "03-star-of-helios",
-      "outcome": "accepted",
-      "manifestId": "BF255D9EE10D4FDD98D010CAD0FA329D",
-      "receiptId": "9D7807F27308902D",
-      "warnings": []
+      "outcome": "error",
+      "error": "HTTP 404: <!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n</body></html>\n"
     },
     {
       "scenario": "04-iron-brigade",
-      "outcome": "accepted",
-      "manifestId": "83F921EE98CA4D2D983257361FDAA998",
-      "receiptId": "B7C283B550B9A371",
-      "warnings": []
+      "outcome": "error",
+      "error": "HTTP 404: <!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n</body></html>\n"
     },
     {
       "scenario": "05-silver-mariner",
-      "outcome": "accepted",
-      "manifestId": "DAC8E374BBB949CE886552210F277F68",
-      "receiptId": "CDA13D55F1A9FB54",
-      "warnings": []
+      "outcome": "error",
+      "error": "HTTP 404: <!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n</body></html>\n"
     },
     {
       "scenario": "06-northern-lights",
-      "outcome": "accepted",
-      "manifestId": "008D940D917744109BBD799F1C484EC9",
-      "receiptId": "FF3CA96A301275DC",
-      "warnings": [
-        {
-          "ruleId": "R-015",
-          "severity": "warning",
-          "fieldPath": "/containers",
-          "message": "manifest contains 1 HAZ container(s) ['FIN0000002']; flagged for harbormaster review per §6.1"
-        }
-      ]
+      "outcome": "error",
+      "error": "HTTP 404: <!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n</body></html>\n"
     },
     {
       "scenario": "07-tempest",

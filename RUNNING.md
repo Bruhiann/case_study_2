@@ -19,7 +19,7 @@ docker compose up --build
 
 The mock listens on `http://localhost:8080`. You should see:
 
-```
+```text
 [startup] Mock Crescent Harbor Customs listening on http://0.0.0.0:8080
 [startup] Authorized filers: CHC100001
 ```
@@ -54,8 +54,10 @@ If `jsonschema` is already installed at a compatible version you will see
 
 ## 3. Run a single scenario (debugging)
 
+**Cross-platform (recommended):**
+
 ```bash
-# Full pipeline — build, validate, rules check, transmit, poll for ack
+# Full pipeline - build, validate, rules check, transmit, poll for ack
 python filer/run.py --scenario scenarios/01-aurora-borealis.json
 
 # Also print the built manifest JSON for inspection
@@ -68,36 +70,55 @@ python filer/run.py --scenario scenarios/08-polaris.json
 python filer/run.py --scenario scenarios/07-tempest.json
 ```
 
+**Bash-compatible environments only** (`bash`, Git Bash, macOS/Linux shell, WSL):
+
+```bash
+# Equivalent wrapper around the Python CLI
+bash run.sh --scenario scenarios/01-aurora-borealis.json
+bash run.sh --scenario scenarios/01-aurora-borealis.json --json
+```
+
+If `bash run.sh` fails on Windows with a WSL or shell error, use the
+cross-platform `python filer/run.py ...` commands above instead.
+
 Exit codes:
-- `0` — accepted by Authority
-- `2` — rejected by schema
-- `3` — rejected by rules
-- `4` — rejected by Authority
-- `5` — network or unexpected error
+- `0` - accepted by Authority
+- `2` - rejected by schema
+- `3` - rejected by rules
+- `4` - rejected by Authority
+- `5` - network or unexpected error
 
 ---
 
 ## 4. Run all 8 scenarios and produce the report
 
+**Cross-platform (recommended):**
+
 ```bash
-# Using the shell wrapper (recommended for grading)
-bash run.sh
-
-# Or directly via Python
 python filer/run.py --all
+```
 
-# Custom output path
+**Bash-compatible environments only** (`bash`, Git Bash, macOS/Linux shell, WSL):
+
+```bash
+# Using the shell wrapper
+bash run.sh
+```
+
+**Custom output path:**
+
+```bash
 python filer/run.py --all --output /tmp/results.json
 ```
 
-`bash run.sh` and `python filer/run.py --all` write `results.json` to the case-study root by default. A custom path may be provided with `--output`. The file uses
-Format B as defined in the case study brief:
+`python filer/run.py --all` and `bash run.sh` write `results.json` to the
+case-study root by default. A custom path may be provided with `--output`.
+The file uses Format B as defined in the case study brief:
 
 ```json
 {
   "results": [
-    { "scenario": "01-aurora-borealis", "outcome": "accepted", ... },
-    ...
+    { "scenario": "01-aurora-borealis", "outcome": "accepted", "..." : "..." }
   ]
 }
 ```
@@ -135,6 +156,7 @@ The mock Authority is not running. Follow step 1 above.
 
 **`HTTP 401: HMAC signature does not match`**
 The filer secret does not match the mock's `secrets.json`. Override with:
+
 ```bash
 CUSTOMS_FILER_SECRET="<secret>" python filer/run.py --scenario ...
 ```
@@ -142,7 +164,8 @@ CUSTOMS_FILER_SECRET="<secret>" python filer/run.py --scenario ...
 **`HTTP 409: duplicate manifestId`**
 A manifest with the same ID was already submitted in this mock session.
 Restart the mock container to clear its in-memory duplicate table, then
-re-run. This should be rare because each run generates a fresh UUID manifestId.
+re-run. This should be rare in this implementation because each run
+generates a fresh UUID manifestId.
 
 **Scenario produces `error` instead of expected outcome**
 Check the mock Authority logs in the Docker terminal. The `error` field in

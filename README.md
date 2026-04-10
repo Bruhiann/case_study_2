@@ -51,10 +51,16 @@ pip install -r filer/requirements.txt
 3. Run all scenarios:
 
 ```bash
-bash run.sh
+python filer/run.py --all
 ```
 
 This writes `results.json` in the repository root.
+
+If you are using a Bash-compatible environment (macOS, Linux, Git Bash, or WSL), you can also use the convenience wrapper:
+
+```bash
+bash run.sh
+```
 
 For exact setup steps, single-scenario debugging, and troubleshooting, see [RUNNING.md](./RUNNING.md).
 
