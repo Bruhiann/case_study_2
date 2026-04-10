@@ -33,7 +33,12 @@
       "Bash(rm -f mock-customs/server-test.err.log)",
       "Bash(git add:*)",
       "Bash(git commit -m ':*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(sed -n '91,97p' /c/Users/Brian/Desktop/case-study/RUNNING.md)",
+      "Bash(sed -n '143,147p' /c/Users/Brian/Desktop/case-study/RUNNING.md)",
+      "Bash(sed -n '4,10p' /c/Users/Brian/Desktop/case-study/ARCHITECTURE.md)",
+      "Bash(sed -n '3,6p' /c/Users/Brian/Desktop/case-study/filer/src/rules.py)",
+      "Bash(sed -n '97,102p' /c/Users/Brian/Desktop/case-study/filer/src/rules.py)"
     ]
   }
 }
