@@ -11,7 +11,7 @@ HMAC-signed HTTP.
 
 **Python 3.12, one external dependency (`jsonschema>=4.23.0`).**
 
-Python was chosen because it is the language the reviewer knows best and
+Python was chosen because it is the language the I know best and
 will be most comfortable discussing. The standard library covers everything
 else: `hashlib`/`hmac` for signing, `urllib.request` for HTTP, `decimal`
 for exact currency arithmetic, `uuid` for manifest IDs, and `datetime` for
